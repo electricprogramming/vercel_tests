@@ -1,9 +1,1 @@
-<html>
-<body>
-
-<h1>Hello!</h1>
-<p>This is a test.</p>
-<h2> Now for some interactivity! </h2>
-
-</body>
-</html>
+ok then
