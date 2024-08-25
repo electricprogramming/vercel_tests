@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/update-file.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/update-file",
+      "dest": "/api/update-file.js"
+    }
+  ],
+  "env": {
+    "GITHUB_API_KEY": "@github_api_key"
+  },
+  "public": true
+}
