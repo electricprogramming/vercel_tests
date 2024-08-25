@@ -8,6 +8,11 @@ export default async function handler(req, res) {
         const GITHUB_API_URL = 'https://api.github.com';
 
         try {
+            // Validate input
+            if (!filePath || !content) {
+                return res.status(400).json({ success: false, error: 'Invalid input' });
+            }
+
             // Get the current file SHA
             const fileResponse = await axios.get(`${GITHUB_API_URL}/repos/electricprogramming/clicky_latin-clouddata/contents/${filePath}`, {
                 headers: {
@@ -32,7 +37,8 @@ export default async function handler(req, res) {
 
             res.status(200).json({ success: true });
         } catch (error) {
-            res.status(500).json({ success: false, error: error.message });
+            console.error('Error updating file:', error);
+            res.status(500).json({ success: false, error: error.message || 'Internal Server Error' });
         }
     } else {
         res.status(405).json({ success: false, error: 'Method not allowed' });
