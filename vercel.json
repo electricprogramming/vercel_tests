@@ -12,8 +12,5 @@
       "dest": "/api/update-file.js"
     }
   ],
-  "env": {
-    "GITHUB_API_KEY": "@github_api_key"
-  },
   "public": true
 }
