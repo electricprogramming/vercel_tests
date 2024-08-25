@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub File Updater</title>
+</head>
+<body>
+    <h1>Update GitHub File</h1>
+    <button id="updateButton">Update File</button>
+
+    <script>
+        document.getElementById('updateButton').addEventListener('click', async () => {
+            const newValue = prompt('Input new content:');
+            if (!newValue) return;
+
+            try {
+                const response = await fetch('/api/update-file', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        content: newValue,
+                        filePath: 'clouddata.txt'
+                    })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert('File updated successfully!');
+                } else {
+                    alert('Failed to update file: ' + result.error);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error: ' + error.message);
+            }
+        });
+    </script>
+</body>
+</html>
