@@ -3,44 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GitHub File Updater</title>
+    <title>User Account System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input {
+            margin-bottom: 10px;
+            padding: 8px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 20px;
+        }
+    </style>
+    <script>
+        // Simulate a simple in-memory storage for demonstration purposes
+        const users = {};
+
+        function registerUser(event) {
+            event.preventDefault();
+
+            const username = document.getElementById('registerUsername').value;
+            const password = document.getElementById('registerPassword').value;
+
+            if (!username || !password) {
+                alert('Both username and password are required.');
+                return;
+            }
+
+            if (users[username]) {
+                alert('Username already exists.');
+                return;
+            }
+
+            // Store the username and password (plaintext, not recommended for real applications)
+            users[username] = password;
+            alert('User registered successfully!');
+        }
+
+        function loginUser(event) {
+            event.preventDefault();
+
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+
+            if (!username || !password) {
+                alert('Both username and password are required.');
+                return;
+            }
+
+            if (users[username] === password) {
+                alert('Login successful!');
+            } else {
+                alert('Invalid username or password.');
+            }
+        }
+    </script>
 </head>
 <body>
-    <h1>Update GitHub File</h1>
-    <button id="updateButton">Update File</button>
+    <h1>User Account System</h1>
+    
+    <h2>Register</h2>
+    <form id="registerForm" onsubmit="registerUser(event)">
+        <label for="registerUsername">Username:</label>
+        <input type="text" id="registerUsername" name="username" autocomplete="username" required>
+        <label for="registerPassword">Password:</label>
+        <input type="password" id="registerPassword" name="password" autocomplete="new-password" required>
+        <button type="submit">Register</button>
+    </form>
 
-    <script>
-        document.getElementById('updateButton').addEventListener('click', async () => {
-            const newValue = prompt('Input new content:');
-            if (!newValue) return;
-
-            try {
-                const response = await fetch('/api/update-file', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        content: newValue,
-                        filePath: 'clouddata.txt'
-                    })
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const result = await response.json();
-                if (result.success) {
-                    alert('File updated successfully!');
-                } else {
-                    alert('Failed to update file: ' + result.error);
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Error: ' + error.message);
-            }
-        });
-    </script>
+    <h2>Login</h2>
+    <form id="loginForm" onsubmit="loginUser(event)">
+        <label for="loginUsername">Username:</label>
+        <input type="text" id="loginUsername" name="username" autocomplete="username" required>
+        <label for="loginPassword">Password:</label>
+        <input type="password" id="loginPassword" name="password" autocomplete="current-password" required>
+        <button type="submit">Login</button>
+    </form>
 </body>
 </html>
