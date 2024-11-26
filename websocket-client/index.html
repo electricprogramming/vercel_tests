@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Test Client</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: row;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        .left {
+            position: absolute;
+            top: 0%;
+            left: 0%;
+            width: 45vw;  /* Increased the left side width */
+            background-color: #333;
+            color: white;
+            padding: 2vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100vh;
+        }
+
+        .right {
+            position: absolute;
+            top: 0%;
+            right: 0%;
+            flex-grow: 1;
+            padding: 2vh;
+            overflow-y: auto;
+            background-color: white;
+            border-left: 0.2vw solid #ccc;
+            height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 4vw;
+        }
+
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 1.5vh 5%;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+            width: 90%;
+            margin: 1.5vh 0;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 3vw;
+        }
+
+        .button:hover {
+            background-color: #45a049;
+        }
+
+        .input {
+            width: 90%;
+            padding: 1.5vh 5%;
+            margin: 1.5vh 0;
+            border: 0.2vw solid #ccc;
+            border-radius: 4px;
+            font-size: 3vw;
+        }
+
+        .input:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+
+        .message-list {
+            width: 55vw;
+            margin-top: 3vh;
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .message-list div {
+            width: 100%;
+            padding: 2vh;
+            margin: 1vh 0;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            font-size: 1vw;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="left">
+        <h1>WebSocket Client</h1>
+        <input class="input" id="serverUrl" placeholder="Enter WebSocket URL" type="text">
+        <button class="button" id="connectBtn">Connect</button>
+        <button class="button" id="disconnectBtn" disabled>Disconnect</button>
+        <input class="input" id="messageInput" placeholder="Enter message" type="text">
+        <button class="button" id="sendBtn" disabled>Send Message</button>
+    </div>
+
+    <div class="right">
+        <h1>Messages</h1>
+        <div class="message-list" id="messageList"></div>
+    </div>
+
+    <script>
+        let ws;
+        const connectBtn = document.getElementById('connectBtn');
+        const disconnectBtn = document.getElementById('disconnectBtn');
+        const sendBtn = document.getElementById('sendBtn');
+        const serverUrlInput = document.getElementById('serverUrl');
+        const messageInput = document.getElementById('messageInput');
+        const messageList = document.getElementById('messageList');
+        connectBtn.addEventListener('click', () => {
+            const url = serverUrlInput.value.trim();
+            if (url) {
+                ws = new WebSocket(url);
+
+                ws.onopen = () => {
+                    displayMessage('Connected to ' + url, 'Server');
+                    connectBtn.disabled = true;
+                    disconnectBtn.disabled = false;
+                    sendBtn.disabled = false;
+                };
+
+                ws.onmessage = (event) => {
+                    displayMessage(event.data, 'Received');
+                };
+
+                ws.onclose = () => {
+                    displayMessage('Connection closed', 'Server');
+                    connectBtn.disabled = false;
+                    disconnectBtn.disabled = true;
+                    sendBtn.disabled = true;
+                };
+
+                ws.onerror = (error) => {
+                    displayMessage('Error: ' + error.message, 'Error');
+                };
+            }
+        });
+        serverUrlInput.addEventListener('keydown', (e) => {
+            if (e.code === 'Enter') connectBtn.click();
+        });
+        disconnectBtn.addEventListener('click', () => {
+            if (ws) {
+                ws.close();
+            }
+        });
+        function send () {
+            const message = messageInput.value.trim();
+            if (ws && message) {
+                ws.send(message);
+                displayMessage(message, 'Sent');
+                messageInput.value = ''; // Clear the input after sending
+            }
+        }
+        sendBtn.addEventListener('click', send);
+        messageInput.addEventListener('keydown', (e) => {
+            if (e.code === 'Enter') send();
+        })
+
+        function displayMessage(msg, type) {
+            const div = document.createElement('div');
+            div.classList.add(type.toLowerCase());
+            div.textContent = `${type}: ${msg}`;
+            messageList.appendChild(div);
+            messageList.scrollBottom = 0;
+        }
+    </script>
+</body>
+</html>
