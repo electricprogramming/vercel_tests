@@ -16,9 +16,9 @@
     if (window.DeviceOrientationEvent) {
       window.addEventListener("deviceorientation", function (event) {
         // alpha, beta, and gamma provide rotation info about the device
-        const alpha = event.alpha;   // rotation around the z-axis (compass)
-        const beta = event.beta;     // rotation around the x-axis (front-to-back)
-        const gamma = event.gamma;   // rotation around the y-axis (side-to-side)
+        const alpha = Math.round(event.alpha);   // rotation around the z-axis (compass)
+        const beta = Math.round(event.beta);     // rotation around the x-axis (front-to-back)
+        const gamma = Math.round(event.gamma);   // rotation around the y-axis (side-to-side)
 
         // Show the values on the page
         document.getElementById("orientation").innerHTML = `
