@@ -1,4 +1,4 @@
 const base = 42;
 export { base };
-import { result } from './helper.js';
-console.log(result);
+import { res } from './helper.js';
+console.log(res);
