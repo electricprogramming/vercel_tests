@@ -1,3 +1,3 @@
-import { base } from './main.js';
-const res = base + 77
-export default res;
+const { base } = await import('./main.js');
+const res = base + 77;
+export { res };
