@@ -4,34 +4,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Phone Orientation Detection</title>
+  <title></title>
 </head>
 
 <body>
-  <h1>Phone Orientation</h1>
-  <p id="orientation"></p>
-
-  <script>
-    // Check if the DeviceOrientation API is supported
-    if (window.DeviceOrientationEvent) {
-      window.addEventListener("deviceorientation", function (event) {
-        // alpha, beta, and gamma provide rotation info about the device
-        const alpha = Math.round(event.alpha);   // rotation around the z-axis (compass)
-        const beta = Math.round(event.beta);     // rotation around the x-axis (front-to-back)
-        const gamma = Math.round(event.gamma);   // rotation around the y-axis (side-to-side)
-
-        // Show the values on the page
-        document.getElementById("orientation").innerHTML = `
-                    Alpha (Compass): ${alpha}°<br>
-                    Beta (Front-Back Tilt): ${beta}°<br>
-                    Gamma (Side-to-Side Tilt): ${gamma}°
-                `;
-      });
-    } else {
-      // If the DeviceOrientationEvent is not supported
-      alert("Device Orientation is not supported on this device.");
-    }
-  </script>
+  <script type="module" src="/main/main.js"></script>
 </body>
 
 </html>
