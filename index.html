@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Device Detection</title>
+  <!-- Include Device.js via CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/device.js/0.2.7/device.min.js"></script>
+</head>
+<body>
+  <h1>Device Type Detection</h1>
+  <p>Your device type is: <strong id="deviceType"></strong></p>
+
+  <script>
+    // Function to detect device type
+    function detectDevice() {
+      let deviceType = '';
+
+      if (device.mobile()) {
+        deviceType = 'Mobile';
+      } else if (device.tablet()) {
+        deviceType = 'Tablet';
+      } else if (device.desktop()) {
+        deviceType = 'Computer';
+      } else {
+        deviceType = 'Other'; // For anything else, like smart TVs or consoles
+      }
+
+      // Output the result to the screen
+      document.getElementById('deviceType').textContent = deviceType;
+    }
+
+    // Run the function when the page loads
+    window.onload = detectDevice;
+  </script>
+</body>
+</html>
